@@ -19,15 +19,17 @@ def connect(config):
     try:
         # connecting to the PostgreSQL server
         # In psycopg2, the with statement doesn't automatically close the database connection — only the transaction is closed
-        with psycopg2.connect(**config) as conn:
-            print('Connected to the PostgreSQL server.')
-            print(f"{conn=}")
-            create_tables(conn)
-            return conn
-        # conn =  psycopg2.connect(**config)
-        # print('Connected to the PostgreSQL server.')
-        # print(f"{conn=}")
-        # return conn
+        # with psycopg2.connect(**config) as conn:
+        #     print('Connected to the PostgreSQL server.')
+        #     print(f"{conn=}")
+        #     create_tables(conn)
+        #     return conn
+
+        conn =  psycopg2.connect(**config)
+        print('Connected to the PostgreSQL server.')
+        print(f"{conn=}")
+        # create_tables(conn)
+        return conn
     except (psycopg2.DatabaseError, Exception) as error:
         print(error)
 
@@ -68,14 +70,15 @@ def create_tables(conn):
                     ON UPDATE CASCADE ON DELETE CASCADE
         )
         """)
-
-    with conn.cursor() as cur:
-        print(f"{cur=}")
-        # execute the CREATE TABLE statement
-        for command in commands:
-            # print(f"Executing {command=}")
-            cur.execute(command)
-        # cur.execute(open("create_tag_table.sql", "r").read())
+    with conn:
+        with conn.cursor() as cur:
+            print(f"{cur=}")
+            # execute the CREATE TABLE statement
+            for command in commands:
+                # print(f"Executing {command=}")
+                cur.execute(command)
+            # cur.execute(open("create_tag_table.sql", "r").read())
+        # conn.commit()
     print("Done creating table")
 
 if __name__ == '__main__':
@@ -83,4 +86,4 @@ if __name__ == '__main__':
     print(config)
     conn = connect(config)
 
-    # create_tables(conn)
+    create_tables(conn)
