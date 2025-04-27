@@ -1,0 +1,17 @@
+PGUSER=postgres "C:\\Program Files\\PostgreSQL\\17\\bin\\createdb" mydb
+export PGUSER=postgres
+
+https://neon.tech/postgresql/postgresql-administration/postgresql-show-tables
+\dt
+\dt+
+\d table_name
+\d+ table_name
+
+INSERT INTO weather VALUES ('San Francisco', 46, 50, 0.25, '1994-11-27');
+INSERT INTO weather (city, temp_lo, temp_hi, prcp, date)
+    VALUES ('San Francisco', 43, 57, 0.0, '1994-11-29');
+
+returns INSERT oid count
+- The count is the number of rows inserted or updated. oid is always 0 (it used to be the OID assigned to the inserted row if count was exactly one and the target table was declared WITH OIDS and 0 otherwise, but creating a table WITH OIDS is not supported anymore).
+
+
