@@ -1,6 +1,6 @@
-from configparser import ConfigParser
 import psycopg2
 
+from configparser import ConfigParser
 def load_config(filename='database.ini', section='postgresql'):
     parser = ConfigParser()
     parser.read(filename)
@@ -14,25 +14,9 @@ def load_config(filename='database.ini', section='postgresql'):
         raise Exception('Section {0} not found in the {1} file'.format(section, filename))
     return config
 
-def connect(config):
-    """ Connect to the PostgreSQL database server """
-    try:
-        # connecting to the PostgreSQL server
-        # In psycopg2, the with statement doesn't automatically close the database connection — only the transaction is closed
-        with psycopg2.connect(**config) as conn:
-            print('Connected to the PostgreSQL server.')
-            print(f"{conn=}")
-            create_tables(conn)
-            return conn
-        # conn =  psycopg2.connect(**config)
-        # print('Connected to the PostgreSQL server.')
-        # print(f"{conn=}")
-        # return conn
-    except (psycopg2.DatabaseError, Exception) as error:
-        print(error)
 
-def create_tables(conn):
-    print(f"{conn=}")
+def create_tables():
+    """ Create tables in the PostgreSQL database"""
     commands = (
         """
         CREATE TABLE vendors (
@@ -68,19 +52,15 @@ def create_tables(conn):
                     ON UPDATE CASCADE ON DELETE CASCADE
         )
         """)
-
-    with conn.cursor() as cur:
-        print(f"{cur=}")
-        # execute the CREATE TABLE statement
-        for command in commands:
-            # print(f"Executing {command=}")
-            cur.execute(command)
-        # cur.execute(open("create_tag_table.sql", "r").read())
-    print("Done creating table")
-
+    try:
+        config = load_config()
+        with psycopg2.connect(**config) as conn:
+            with conn.cursor() as cur:
+                print(f"{cur=}")
+                # execute the CREATE TABLE statement
+                for command in commands:
+                    cur.execute(command)
+    except (psycopg2.DatabaseError, Exception) as error:
+        print(error)
 if __name__ == '__main__':
-    config = load_config()
-    print(config)
-    conn = connect(config)
-
-    # create_tables(conn)
+    create_tables()
