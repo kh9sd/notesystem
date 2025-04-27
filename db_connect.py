@@ -26,26 +26,9 @@ def connect(config):
         #     return conn
 
         conn =  psycopg2.connect(**config)
-        print('Connected to the PostgreSQL server.')
-        print(f"{conn=}")
+        #print('Connected to the PostgreSQL server.')
+        #print(f"{conn=}")
         # create_tables(conn)
         return conn
     except (psycopg2.DatabaseError, Exception) as error:
         print(error)
-
-def create_tables(conn):
-    print(f"{conn=}")
-    with conn:
-        with conn.cursor() as cur:
-            print(f"{cur=}")
-            # execute the CREATE TABLE statement
-            cur.execute(open("create_tag_table.sql", "r").read())
-        # conn.commit()
-    print("Done creating table")
-
-if __name__ == '__main__':
-    config = load_config()
-    print(config)
-    conn = connect(config)
-
-    create_tables(conn)
