@@ -33,20 +33,22 @@ if __name__ == '__main__':
     # print(f"{root_file_path=}")
 
     root_dir_path = root_file_path.parent
-    print(f"{root_dir_path=}")
+    # print(f"{root_dir_path=}")
 
-    save_dir = root_dir_path / 'saved'
-    print(f"{save_dir=}")
+    saved_dir_path = root_dir_path / 'saved'
+    # print(f"{saved_dir_path=}")
 
-
+    # test file
     shit = list(Path().glob("TEMP_FILE.txt"))
     assert(len(shit) == 1)
+
+    # TODO: how do I get this
     new_file_abs_path = shit[0].resolve()
     new_file_raw_name = new_file_abs_path.name
-    print(f"{new_file_raw_name=}")
+    # print(f"{new_file_raw_name=}")
 
-    new_save_file_path = save_dir / new_file_raw_name
-    print(f"{new_file_abs_path=} {new_save_file_path=}")
+    new_saved_file_path = saved_dir_path / new_file_raw_name
+    # print(f"{new_file_abs_path=} {new_saved_file_path=}")
 
-    os.makedirs(save_dir, exist_ok=True)
-    safe_copy(new_file_abs_path, new_save_file_path)
+    os.makedirs(saved_dir_path, exist_ok=True)
+    safe_copy(new_file_abs_path, new_saved_file_path)
