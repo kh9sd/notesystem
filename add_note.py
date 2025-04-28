@@ -1,4 +1,6 @@
 from db_connect import load_config, connect
+from ROOT import get_root_dir_path
+
 from pathlib import Path
 from safe_copy import safe_copy
 import os
@@ -23,20 +25,11 @@ if __name__ == '__main__':
     # print(config)
     conn = connect(config)
 
-    # new_tag_name = 'Shit5'
-    # add_tag(conn, new_tag_name)
-
-    root_file_paths = list(Path().glob("ROOT"))
-    assert(len(root_file_paths) == 1)
-
-    root_file_path = root_file_paths[0].resolve()
-    # print(f"{root_file_path=}")
-
-    root_dir_path = root_file_path.parent
+    root_dir_path = get_root_dir_path()
     # print(f"{root_dir_path=}")
 
     # test file
-    shit = list(Path().glob("TEMP_FILE2.txt"))
+    shit = list(Path().glob("TEMP_FILE3.txt"))
     assert(len(shit) == 1)
 
     # TODO: how do I get this
@@ -53,6 +46,7 @@ if __name__ == '__main__':
 
     os.makedirs(root_dir_path / relative_saved_dir_from_root, exist_ok=True)
     safe_copy(new_file_abs_path, new_saved_file_path)
+    # TODO: print success on filesystem save
 
     # TODO: possibility of desync, file save works, but DB save doesn't
 

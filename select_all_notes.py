@@ -1,4 +1,5 @@
 from db_connect import load_config, connect
+from ROOT import get_root_dir_path
 
 from pathlib import Path
 
@@ -23,14 +24,7 @@ if __name__ == '__main__':
     returned_rows = create_tables(conn)
     # pprint(returned_rows)
 
-    # TODO: this is from the shit
-    root_file_paths = list(Path().glob("ROOT"))
-    assert(len(root_file_paths) == 1)
-
-    root_file_path = root_file_paths[0].resolve()
-    # print(f"{root_file_path=}")
-
-    root_dir_path = root_file_path.parent
+    root_dir_path = get_root_dir_path()
     #print(f"{root_dir_path=}")
 
     for id, rel_path, created_at in returned_rows:
