@@ -35,9 +35,6 @@ if __name__ == '__main__':
     root_dir_path = root_file_path.parent
     # print(f"{root_dir_path=}")
 
-    saved_dir_path = root_dir_path / 'saved'
-    # print(f"{saved_dir_path=}")
-
     # test file
     shit = list(Path().glob("TEMP_FILE.txt"))
     assert(len(shit) == 1)
@@ -47,8 +44,12 @@ if __name__ == '__main__':
     new_file_raw_name = new_file_abs_path.name
     # print(f"{new_file_raw_name=}")
 
-    new_saved_file_path = saved_dir_path / new_file_raw_name
-    # print(f"{new_file_abs_path=} {new_saved_file_path=}")
+    # We will be saving this relative path in the DB
+    relative_saved_dir_from_root = Path('saved')
+    relative_saved_file_path_from_root = relative_saved_dir_from_root / new_file_raw_name
+    print(f"{relative_saved_file_path_from_root=}")
 
-    os.makedirs(saved_dir_path, exist_ok=True)
+    new_saved_file_path = root_dir_path / relative_saved_file_path_from_root
+
+    os.makedirs(root_dir_path / relative_saved_dir_from_root, exist_ok=True)
     safe_copy(new_file_abs_path, new_saved_file_path)
